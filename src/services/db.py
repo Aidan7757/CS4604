@@ -1,27 +1,15 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 import os
+import sys
 
-app = Flask(__name__)
-CORS(app) 
+sys.path.append(os.path.abspath("../src/utils"))
+from config import * 
 
-# Database configuration
-DB_CONFIG = {
-    'user': os.getenv('DB_USER', 'root'),
-    'password': os.getenv('DB_PASSWORD', ''),
-    'host': os.getenv('DB_HOST', '127.0.0.1'),
-    'database': os.getenv('DB_NAME', 'CS4604')
-}
-
-@app.route('/connect', methods=['GET'])
-def connect_database():
-    """
-    Endpoint to test database connection
-    Returns JSON response with connection status
-    """
+def connect_to_db():
     try:
         # Attempt to connect to the database
         cnx = mysql.connector.connect(**DB_CONFIG)
@@ -51,6 +39,3 @@ def connect_database():
     finally:
         if 'cnx' in locals() and cnx.is_connected():
             cnx.close()
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
