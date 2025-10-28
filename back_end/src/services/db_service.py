@@ -44,6 +44,10 @@ class DBService:
         if self.db and self.db.is_connected():
             self.db.close()
 
+        return jsonify({
+            "message": "Disconnected from database."
+        }), 200
+
     def insert_into_db(self, table_name: str, payload: dict):
         if not self.db or not self.db.is_connected():
             self.db = mysql.connector.connect(**DB_CONFIG)
@@ -57,6 +61,5 @@ class DBService:
         self.db.commit()
 
         return jsonify({
-            "status": 200,
             "message": f"Successfully inserted into table: {table_name} with values {tuple(payload.values())}"
-        })
+        }), 200
