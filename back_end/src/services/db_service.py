@@ -38,7 +38,6 @@ class DBService:
                 'error': str(e)
             }), 500
 
-
     def disconnect_from_db(self):
         if self.cursor:
             self.cursor.close()
@@ -57,4 +56,7 @@ class DBService:
         self.cursor.execute(insertion_command, tuple(payload.values()))
         self.db.commit()
 
-        return insertion_command
+        return jsonify({
+            "status": 200,
+            "message": f"Successfully inserted into table: {table_name} with values {tuple(payload.values())}"
+        })

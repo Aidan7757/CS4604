@@ -2,6 +2,7 @@
 Verifies the payload given for a certain command.
 '''
 
+
 def alert_table_insert_verification(payload: dict) -> bool:
     if payload.get("alert_id") and payload.get("message") and payload.get("park_id") and payload.get("title"):
         return True
@@ -61,6 +62,3 @@ def payload_verification(table_name: str, payload: dict) -> bool:
             return species_table_insert_verification(payload)
         case "preservation_project":
             return preservation_project_table_insert_verification(payload)
-
-
-
