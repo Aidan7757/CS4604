@@ -1,5 +1,8 @@
 # Database configuration
-import os 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DB_CONFIG = {
     'user': os.getenv('DB_USER', 'root'),
