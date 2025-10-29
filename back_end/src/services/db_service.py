@@ -63,3 +63,6 @@ class DBService:
         return jsonify({
             "message": f"Successfully inserted into table: {table_name} with values {tuple(payload.values())}"
         }), 200
+
+    def delete_from_db(self, table_name: str, payload: dict):
+        pass

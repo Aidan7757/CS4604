@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import sys
+import mysql
 
 app = Flask(__name__)
 CORS(app)
@@ -43,10 +44,19 @@ def insert_new_value(table_name: str):
     if not valid_payload:
         return jsonify(
             {
-                "error_message": f"Invalid payload for table: {table_name}, requested payload: {payload}"
+                "error_message": f"Invalid payload for table: {table_name}",
+                "payload": payload
             }
         ), 400
-    return db_service.insert_into_db(table_name, payload)
+    try:
+        return db_service.insert_into_db(table_name, payload)
+    except mysql.connector.errors.IntegrityError:
+        return jsonify(
+            {
+                "error_message": f"Duplicate entry for insertion attempt into {table_name}.",
+                "payload": payload
+            }
+        ), 400
 
 
 if __name__ == '__main__':
