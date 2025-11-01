@@ -17,11 +17,15 @@ def org_table_insert_verification(payload: dict) -> bool:
 
 
 def park_table_insert_verification(payload: dict) -> bool:
-    pass
+    if payload.get("park_id") and payload.get("first_name") and payload.get("last_name") and payload.get("status"):
+        return True
+    return False
 
 
 def visitor_table_insert_verification(payload: dict) -> bool:
-    pass
+    if payload.get("visitor_id") and payload.get("hour_entered") and payload.get("age") and payload.get("name"):
+        return True
+    return False
 
 
 def pollutant_table_insert_verification(payload: dict) -> bool:

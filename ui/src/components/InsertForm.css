@@ -1,0 +1,73 @@
+.insert-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 4rem;
+  min-height: 100vh;
+  color: white;
+  text-align: left;
+}
+
+.insert-form-card {
+  padding: 2rem 2.5rem;
+  border-radius: 10px;
+  width: 400px;
+}
+
+.insert-form-card h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.row label {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+.row input,
+.row select {
+  padding: 0.6rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1e2127;
+  color: white;
+}
+
+.row input:focus,
+.row select:focus {
+  outline: none;
+  border-color: #61dafb;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #61dafb;
+  color: black;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover {
+  background: #53c8e6;
+}
+
+.form-status {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
