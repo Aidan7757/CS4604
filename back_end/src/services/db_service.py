@@ -65,4 +65,63 @@ class DBService:
         }), 200
 
     def delete_from_db(self, table_name: str, payload: dict):
-        pass
+        """
+        Delete ONE row from `table_name` that matches all key=value pairs in payload.
+        Accepts either:
+          { "pk_col": "value", ... }
+        or:
+          { "where": { "pk_col": "value", ... } }
+        """
+        # accept {"where": {...}} or flat body
+        where = payload.get("where", payload)
+
+        if not where or not isinstance(where, dict):
+            return jsonify({
+                "status": "error",
+                "message": "Provide JSON with identifying column(s), e.g. {'alert_id':'AL001'}"
+            }), 400
+
+        # ensure connection
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+            self.cursor = self.db.cursor()
+
+        # build parameterized WHERE
+        cols = list(where.keys())
+        vals = list(where.values())
+        clauses = [f"`{c}` = %s" for c in cols]
+        sql = f"DELETE FROM {table_name} WHERE " + " AND ".join(clauses) + " LIMIT 1"
+
+        try:
+            self.cursor.execute(sql, tuple(vals))
+            self.db.commit()
+            deleted = self.cursor.rowcount
+
+            if deleted == 0:
+                return jsonify({
+                    "status": "not_found",
+                    "message": "No matching row found"
+                }), 404
+
+            return jsonify({
+                "status": "success",
+                "message": f"Deleted from table: {table_name}",
+                "deleted_rows": deleted
+            }), 200
+
+        except mysql.connector.errors.IntegrityError as e:
+            # FK constraint, etc.
+            self.db.rollback()
+            return jsonify({
+                "status": "error",
+                "message": "Delete blocked by foreign key constraint",
+                "error": str(e)
+            }), 409
+
+        except Error as e:
+            self.db.rollback()
+            return jsonify({
+                "status": "error",
+                "message": "Delete failed",
+                "error": str(e)
+            }), 400
