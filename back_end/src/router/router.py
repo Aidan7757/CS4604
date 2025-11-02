@@ -59,5 +59,20 @@ def insert_new_value(table_name: str):
         ), 400
 
 
+
+@app.route("/delete/<table_name>", methods=["DELETE"])
+def delete_value(table_name: str):
+    db_service = DBService()
+    payload = request.get_json(silent=True) or {}   # accepts {"pk":"val"} or {"where": {...}}
+    try:
+        return db_service.delete_from_db(table_name, payload)
+    except mysql.connector.errors.IntegrityError:
+        return jsonify(
+            {
+                "error_message": f"Delete blocked by foreign key constraint in {table_name}.",
+                "payload": payload
+            }
+        ), 409
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
