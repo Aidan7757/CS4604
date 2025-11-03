@@ -13,6 +13,15 @@ from db_service import DBService
 sys.path.append(os.path.abspath("../src/utils"))
 from payload_verification import payload_verification
 
+VALID_TABLES = {"alert",
+                "organization",
+                "park",
+                "visitor",
+                "pollutant",
+                "species",
+                "preservation_project"}
+
+
 '''
 Connects to the database. 
 '''
@@ -38,6 +47,13 @@ Inserts a new value into a specific table within the CS4604 database.
 '''
 @app.route("/insert/<table_name>", methods=["POST"])
 def insert_new_value(table_name: str):
+
+    if table_name.lower() not in VALID_TABLES:
+        return jsonify(
+            {
+                "error_message": f"Table {table_name} is not a valid table",
+            }
+        ), 400
     db_service = DBService()
     payload = dict(request.json)
     valid_payload = payload_verification(table_name, payload)
@@ -58,6 +74,30 @@ def insert_new_value(table_name: str):
             }
         ), 400
 
+'''
+Deletes a value from a specific table within the CS4604 database. 
+'''
+@app.route("/delete/<table_name>", methods=["POST"])
+def delete_value(table_name: str):
+    if table_name.lower() not in VALID_TABLES:
+        return jsonify(
+            {
+                "error_message": f"Table {table_name} is not a valid table",
+            }
+        ), 400
+    db_service = DBService()
+    if request.json:
+        payload = dict(request.json)
+    else:
+        payload = {}
+    try:
+        return db_service.delete_from_db(table_name, payload)
+    except Exception as e:
+        return jsonify(
+            {
+                "error_message": f"Delete failed: {str(e)}"
+            }
+        ), 400
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

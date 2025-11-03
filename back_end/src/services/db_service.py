@@ -61,8 +61,33 @@ class DBService:
         self.db.commit()
 
         return jsonify({
-            "message": f"Successfully inserted into table: {table_name} with values {tuple(payload.values())}"
+            "message": f"Successfully inserted into table: {table_name} with value(s) {tuple(payload.values())}"
         }), 200
 
     def delete_from_db(self, table_name: str, payload: dict):
-        pass
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+            self.cursor = self.db.cursor()
+
+        if not payload:
+            return jsonify({
+                "error_message": "Delete requires at least one item (key, value) to remove"
+            }), 400
+        
+        conditions_list = [f"{col} = %s" for col in payload.keys()]
+        conditions_in_sql = " AND ".join(conditions_list)
+        deletion_command = f"DELETE FROM {table_name} WHERE {conditions_in_sql}"
+
+        self.cursor.execute(deletion_command, tuple(payload.values()))
+        self.db.commit()
+
+        if self.cursor.rowcount == 0:
+            return jsonify({
+                "error_message": f"Deletion failed as no rows matched in {table_name}",
+                "rows_affected": 0
+            }), 404
+        
+        return jsonify({
+            "message": f"Successfully deleted {tuple(payload.values())} value(s) from table: {table_name}",
+            "rows_affected": self.cursor.rowcount
+        }), 200
