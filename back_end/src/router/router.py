@@ -99,5 +99,18 @@ def delete_value(table_name: str):
             }
         ), 400
 
+'''
+Selects rows from a specific table within the CS4604 database. 
+'''
+@app.route("/select/<table_name>", methods=["GET"])
+def select_table(table_name: str):
+    if table_name.lower() not in VALID_TABLES:
+        return jsonify({
+            "error_message": f"Table {table_name} is not a valid table"
+        }), 400
+
+    db_service = DBService()
+    return db_service.select_rows(table_name)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

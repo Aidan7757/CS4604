@@ -4,6 +4,7 @@ import ActionButton from "./components/ActionButton";
 import api from "./services/api";
 import { Routes, Route, Link } from "react-router-dom";
 import InsertForm from "./components/InsertForm";
+import DeleteForm from "./components/DeleteForm";
 
 function App() {
   const [status, setStatus] = useState("idle");
@@ -40,6 +41,10 @@ function App() {
       <Link to="/insert">
         <button style={{ marginTop: 16 }}>Go to Insert Page</button>
       </Link>
+
+      <Link to="/delete"><
+        button style={{ marginTop: 8 }}>Go to Delete Page</button>
+      </Link>
     </header>
   );
 
@@ -49,11 +54,18 @@ function App() {
     </div>
   );
 
+  const DeletePage = (
+    <div className="App-header">
+      <DeleteForm />
+    </div>
+  );
+
   return (
     <div className="App single-screen">
       <Routes>
         <Route path="/" element={Home} />
         <Route path="/insert" element={InsertPage} />
+        <Route path="/delete" element={DeletePage} />
       </Routes>
     </div>
   );

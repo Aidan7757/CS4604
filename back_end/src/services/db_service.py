@@ -88,6 +88,23 @@ class DBService:
             }), 404
         
         return jsonify({
-            "message": f"Successfully deleted {tuple(payload.values())} value(s) from table: {table_name}",
+            "message": f"Successfully deleted {self.cursor.rowcount} row(s) from table: {table_name}",
             "rows_affected": self.cursor.rowcount
         }), 200
+    
+    def select_rows(self, table_name: str):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+            self.cursor = self.db.cursor(dictionary=True)
+
+        sql = f"SELECT * FROM {table_name}"
+
+        try:
+            self.cursor.execute(sql)
+            rows = self.cursor.fetchall() 
+            return jsonify(rows), 200
+        except mysql.connector.Error as e:
+            return jsonify({
+                "error_message": f"Select failed: {str(e)}"
+            }), 400
+
