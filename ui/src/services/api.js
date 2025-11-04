@@ -27,4 +27,35 @@ export async function insert(table, payload) {
   return resp.json();
 }
 
-export default { connect, insert };
+export async function listRows(table) {
+  const res = await fetch(`${BASE}/select/${table.toLowerCase()}`); 
+  if (!res.ok) {
+    throw new Error(`Failed to load rows (${res.status})`);
+  }
+
+  return res.json();
+}
+
+export async function del(table, where) {
+  const resp = await fetch(`${BASE}/delete/${table.toLowerCase()}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(where),
+  });
+  const text = await resp.text();
+
+  let data;  
+  try { 
+    data = JSON.parse(text); 
+  } catch { 
+    data = { message: text }; 
+  }
+
+  if (!resp.ok) {
+    throw new Error(data.error_message || data.message || `Delete failed: ${resp.status}`);
+  }
+
+  return data;
+}
+
+export default { connect, insert, listRows, del };

@@ -49,3 +49,13 @@ export const TABLE_SCHEMAS = {
 };
 
 export const TABLE_ORDER = Object.keys(TABLE_SCHEMAS);
+
+export const TABLE_PK = {
+  ALERT: "alert_id",
+  ORGANIZATION: "org_id",
+  PARK: "park_id",
+  POLLUTANT: "pollutant_id",
+  PRESERVATION_PROJECT: "project_id",
+  SPECIES: "species_id",
+  VISITOR: "visitor_id",
+};

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import api from "../services/api";
 import { TABLE_SCHEMAS, TABLE_ORDER } from "../tableSchemas";
 import "./InsertForm.css";
@@ -23,7 +23,8 @@ export default function InsertForm() {
 
   async function onSubmit(e) {
     e.preventDefault();
-    setStatus("loading"); setMsg("Inserting…");
+    setStatus("loading"); 
+    setMsg("Inserting…");
 
     const payload = {};
     for (const f of fields) {
