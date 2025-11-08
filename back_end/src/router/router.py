@@ -7,10 +7,10 @@ import mysql
 app = Flask(__name__)
 CORS(app)
 
-sys.path.append(os.path.abspath("../src/services"))
+sys.path.append(os.path.abspath("../services"))
 from db_service import DBService
 
-sys.path.append(os.path.abspath("../src/utils"))
+sys.path.append(os.path.abspath("../utils"))
 from payload_verification import payload_verification
 
 TABLE_METADATA = {
@@ -145,6 +145,14 @@ Get all alerts
 def get_alerts():
     db_service = DBService()
     return db_service.get_all_alerts()
+
+"""
+Get statistics overview
+"""
+@app.route('/statistics', methods=['GET'])
+def get_statistics():
+    db_service = DBService()
+    return db_service.get_statistics()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
