@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import "./InsertForm.css";
 
-const SPECIES_COLUMNS = [
-  { key: "common_name", label: "Common Name" },
-  { key: "scientific_name", label: "Scientific Name" },
-  { key: "conservation_status", label: "Conservation Status" },
-  { key: "species_count", label: "Estimated Count in Park" },
-  // species_id is hidden from the UI
+const VISITOR_COLUMNS = [
+  { key: "name", label: "Visitor Name" },
+  { key: "age", label: "Age" },
+  { key: "hour_entered", label: "Time Entered Park" },
+  // visitor_id is hidden from the UI
 ];
 
-export default function SpeciesTable() {
+export default function VisitorTable() {
   const [rows, setRows] = useState([]);
   const [status, setStatus] = useState("idle");
   const [msg, setMsg] = useState("");
@@ -20,9 +19,9 @@ export default function SpeciesTable() {
 
     async function load() {
       setStatus("loading");
-      setMsg("Loading species...");
+      setMsg("Loading visitors...");
       try {
-        const data = await api.listRows("species");
+        const data = await api.listRows("visitor");
         if (!ignore) {
           setRows(Array.isArray(data) ? data : []);
           setStatus("success");
@@ -31,7 +30,7 @@ export default function SpeciesTable() {
       } catch (err) {
         if (!ignore) {
           setStatus("error");
-          setMsg(err.message || "Failed to load species");
+          setMsg(err.message || "Failed to load visitors");
         }
       }
     }
@@ -45,17 +44,17 @@ export default function SpeciesTable() {
   return (
     <div className="insert-page">
       <div className="insert-form-card">
-        <h2>Species Overview</h2>
+        <h2>Visitors Overview</h2>
         <p style={{ fontSize: "0.9rem", marginBottom: "8px" }}>
-          This page shows tracked species with their common name, scientific
-          name, conservation status, and approximate count in the park system.
+          This page shows visitors along with their age and the time they
+          entered the park.
         </p>
 
         {status === "loading" && <div className="form-status">Loading…</div>}
         {status === "error" && <div className="form-status">{msg}</div>}
 
         {status === "success" && rows.length === 0 && (
-          <div className="form-status">No species found.</div>
+          <div className="form-status">No visitors found.</div>
         )}
 
         {rows.length > 0 && (
@@ -63,7 +62,7 @@ export default function SpeciesTable() {
             <table style={{ borderCollapse: "collapse", width: "100%" }}>
               <thead>
                 <tr>
-                  {SPECIES_COLUMNS.map(col => (
+                  {VISITOR_COLUMNS.map(col => (
                     <th
                       key={col.key}
                       style={{ borderBottom: "1px solid #ccc", padding: "4px" }}
@@ -76,7 +75,7 @@ export default function SpeciesTable() {
               <tbody>
                 {rows.map((row, idx) => (
                   <tr key={idx}>
-                    {SPECIES_COLUMNS.map(col => (
+                    {VISITOR_COLUMNS.map(col => (
                       <td
                         key={col.key}
                         style={{

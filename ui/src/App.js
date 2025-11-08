@@ -6,6 +6,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import InsertForm from "./components/InsertForm";
 import DeleteForm from "./components/DeleteForm";
 import SpeciesTable from "./components/SpeciesTable";
+import VisitorTable from "./components/VisitorTable";
+import OrganizationTable from "./components/OrganizationTable";
 
 function App() {
   const [status, setStatus] = useState("idle");
@@ -50,6 +52,13 @@ function App() {
       <Link to="/view/species">
         <button style={{ marginTop: 8 }}>View Species</button>
       </Link>
+
+      <Link to="/view/visitors">
+        <button style={{ marginTop: 8 }}>View Visitors</button>
+      </Link>
+      <Link to="/view/organizations">
+        <button style={{ marginTop: 8 }}>View Organizations</button>
+      </Link>
     </header>
   );
 
@@ -76,6 +85,22 @@ function App() {
           element={
             <div className="App-header">
               <SpeciesTable />
+            </div>
+          }
+        />
+        <Route
+          path="/view/visitors"
+          element={
+            <div className="App-header">
+              <VisitorTable />
+            </div>
+          }
+        />
+        <Route
+          path="/view/organizations"
+          element={
+            <div className="App-header">
+              <OrganizationTable />
             </div>
           }
         />
