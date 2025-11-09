@@ -14,8 +14,7 @@ export const TABLE_SCHEMAS = {
   ],
   PARK: [
     { name: "park_id", type: "text", required: true },
-    { name: "first_name", type: "text", required: true },
-    { name: "last_name", type: "text", required: true },
+    { name: "park_name", type: "text", required: true },
     { name: "status", type: "text", required: true },
     { name: "project_id", type: "text", required: false },
   ],
