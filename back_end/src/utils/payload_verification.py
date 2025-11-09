@@ -17,7 +17,7 @@ def org_table_insert_verification(payload: dict) -> bool:
 
 
 def park_table_insert_verification(payload: dict) -> bool:
-    if payload.get("park_id") and payload.get("first_name") and payload.get("last_name") and payload.get("status"):
+    if payload.get("park_id") and payload.get("park_name") and payload.get("status"):
         return True
     return False
 
