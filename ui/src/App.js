@@ -1,74 +1,22 @@
-import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import HomePage from "./components/HomePage";
+import ParksPage from "./components/ParksPage";
+import SingleParkPage from "./components/SingleParkPage";
+import AlertsPage from "./components/AlertsPage";
 import "./App.css";
-import ActionButton from "./components/ActionButton";
-import api from "./services/api";
-import { Routes, Route, Link } from "react-router-dom";
-import InsertForm from "./components/InsertForm";
-import DeleteForm from "./components/DeleteForm";
 
-function App() {
-  const [status, setStatus] = useState("idle");
-  const [message, setMessage] = useState("");
-
-  async function handleConnect() {
-    setStatus("loading");
-    setMessage("Connecting...");
-    try {
-      const res = await api.connect();
-      setStatus("connected");
-      setMessage(res.message || "Connected to database");
-    } catch (err) {
-      setStatus("error");
-      setMessage(err.message || "Failed to connect");
-    }
-  }
-
-  const Home = (
-    <header className="App-header">
-      <h1>Database Connector</h1>
-      <p>Click the button to connect to the database endpoint.</p>
-
-      <ActionButton
-        label={status === "loading" ? "Connecting…" : "Connect"}
-        onClick={handleConnect}
-        disabled={status === "loading" || status === "connected"}
-      />
-
-      <div className={`status status--${status}`}>
-        {message || (status === "idle" ? "Not connected" : "")}
-      </div>
-
-      <Link to="/insert">
-        <button style={{ marginTop: 16 }}>Go to Insert Page</button>
-      </Link>
-
-      <Link to="/delete"><
-        button style={{ marginTop: 8 }}>Go to Delete Page</button>
-      </Link>
-    </header>
-  );
-
-  const InsertPage = (
-    <div className="App-header">
-      <InsertForm />
-    </div>
-  );
-
-  const DeletePage = (
-    <div className="App-header">
-      <DeleteForm />
-    </div>
-  );
-
+export default function App() {
   return (
-    <div className="App single-screen">
+    <div className="App">
+      <NavBar />
       <Routes>
-        <Route path="/" element={Home} />
-        <Route path="/insert" element={InsertPage} />
-        <Route path="/delete" element={DeletePage} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/parks" element={<ParksPage />} />
+        <Route path="/parks/:parkId" element={<SingleParkPage />} />
+        <Route path="/alerts" element={<AlertsPage />} />
       </Routes>
     </div>
   );
 }
 
-export default App;
