@@ -108,3 +108,81 @@ class DBService:
                 "error_message": f"Select failed: {str(e)}"
             }), 400
 
+    def get_all_parks(self):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor(dictionary=True)
+        try:
+            self.cursor.execute("SELECT * FROM park")
+            result = self.cursor.fetchall()
+            return jsonify(result), 200
+        except Error as e:
+            return jsonify({"error": str(e)}), 500
+
+    def get_park_by_id(self, park_id):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor(dictionary=True)
+        try:
+            self.cursor.execute("SELECT * FROM park WHERE park_id = %s", (park_id,))
+            result = self.cursor.fetchone()
+            if result:
+                return jsonify(result), 200
+            else:
+                return jsonify({"message": "Park not found"}), 404
+        except Error as e:
+            return jsonify({"error": str(e)}), 500
+
+    def update_park(self, park_id, payload):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor()
+        try:
+            update_query = "UPDATE park SET {} WHERE park_id = %s".format(
+                ', '.join(['{}=%s'.format(k) for k in payload.keys()])
+            )
+            values = list(payload.values()) + [park_id]
+            self.cursor.execute(update_query, values)
+            self.db.commit()
+            return jsonify({"message": f"Park with ID {park_id} updated successfully."}), 200
+        except Error as e:
+            return jsonify({"error": str(e)}), 500
+
+    def delete_park_by_id(self, park_id):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor()
+        try:
+            self.cursor.execute("DELETE FROM park WHERE park_id = %s", (park_id,))
+            self.db.commit()
+            if self.cursor.rowcount == 0:
+                return jsonify({"message": "Park not found"}), 404
+            return jsonify({"message": f"Park with ID {park_id} deleted successfully."}), 200
+        except Error as e:
+            return jsonify({"error": str(e)}), 500
+
+    def get_all_alerts(self):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor(dictionary=True)
+        try:
+            self.cursor.execute("""
+                SELECT a.*, p.park_name
+                FROM alert a
+                JOIN park p ON a.park_id = p.park_id
+            """)
+            result = self.cursor.fetchall()
+            return jsonify(result), 200
+        except Error as e:
+            return jsonify({"error": str(e)}), 500
+
+    def get_all_projects(self):
+        if not self.db or not self.db.is_connected():
+            self.db = mysql.connector.connect(**DB_CONFIG)
+        self.cursor = self.db.cursor(dictionary=True)
+        try:
+            self.cursor.execute("SELECT * FROM preservation_project")
+            result = self.cursor.fetchall()
+            return jsonify(result), 200
+        except Error as e:
+            return jsonify({"error": str(e)}), 500

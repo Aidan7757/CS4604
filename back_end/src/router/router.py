@@ -112,5 +112,54 @@ def select_table(table_name: str):
     db_service = DBService()
     return db_service.select_rows(table_name)
 
+"""
+Get all parks
+"""
+@app.route('/parks', methods=['GET'])
+def get_parks():
+    db_service = DBService()
+    return db_service.get_all_parks()
+
+"""
+Get a specific park by ID
+"""
+@app.route('/parks/<park_id>', methods=['GET'])
+def get_park(park_id):
+    db_service = DBService()
+    return db_service.get_park_by_id(park_id)
+
+"""
+Update a specific park by ID
+"""
+@app.route('/parks/<park_id>', methods=['PUT'])
+def update_park(park_id):
+    db_service = DBService()
+    payload = dict(request.json)
+    return db_service.update_park(park_id, payload)
+
+"""
+Delete a specific park by ID
+"""
+@app.route('/parks/<park_id>', methods=['DELETE'])
+def delete_park(park_id):
+    db_service = DBService()
+    return db_service.delete_park_by_id(park_id)
+
+"""
+Get all alerts
+"""
+@app.route('/alerts', methods=['GET'])
+def get_alerts():
+    db_service = DBService()
+    return db_service.get_all_alerts()
+
+"""
+Get all preservation projects
+"""
+@app.route('/projects', methods=['GET'])
+def get_projects():
+    db_service = DBService()
+    return db_service.get_all_projects()
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

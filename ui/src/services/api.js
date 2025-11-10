@@ -10,6 +10,74 @@ export async function connect() {
   return resp.json().catch(() => ({ ok: true }));
 }
 
+export async function getParks() {
+  const resp = await fetch(`${BASE}/parks`);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Request failed ${resp.status}: ${text}`);
+  }
+  return resp.json();
+}
+
+export async function getParkById(parkId) {
+  const resp = await fetch(`${BASE}/parks/${parkId}`);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Request failed ${resp.status}: ${text}`);
+  }
+  return resp.json();
+}
+
+export async function getAlerts() {
+  const resp = await fetch(`${BASE}/alerts`);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Request failed ${resp.status}: ${text}`);
+  }
+  return resp.json();
+}
+
+export async function getProjects() {
+  const resp = await fetch(`${BASE}/projects`);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Request failed ${resp.status}: ${text}`);
+  }
+  return resp.json();
+}
+
+export async function updatePark(parkId, payload) {
+    const resp = await fetch(`${BASE}/parks/${parkId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+        const error = await resp.json().catch(() => ({}));
+        throw new Error(
+            error.error_message || error.message || `Update failed: ${resp.status}`
+        );
+    }
+
+    return resp.json();
+}
+
+export async function deletePark(parkId) {
+    const resp = await fetch(`${BASE}/parks/${parkId}`, {
+        method: "DELETE",
+    });
+
+    if (!resp.ok) {
+        const error = await resp.json().catch(() => ({}));
+        throw new Error(
+            error.error_message || error.message || `Delete failed: ${resp.status}`
+        );
+    }
+
+    return resp.json();
+}
+
 export async function insert(table, payload) {
   const resp = await fetch(`${BASE}/insert/${table.toLowerCase()}`, {
     method: "POST",
@@ -58,4 +126,4 @@ export async function del(table, where) {
   return data;
 }
 
-export default { connect, insert, listRows, del };
+export default { connect, insert, listRows, del, getParks, getParkById, getAlerts, getProjects, updatePark, deletePark };
