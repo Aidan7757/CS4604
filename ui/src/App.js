@@ -5,6 +5,9 @@ import api from "./services/api";
 import { Routes, Route, Link } from "react-router-dom";
 import InsertForm from "./components/InsertForm";
 import DeleteForm from "./components/DeleteForm";
+import SpeciesTable from "./components/SpeciesTable";
+import VisitorTable from "./components/VisitorTable";
+import OrganizationTable from "./components/OrganizationTable";
 
 function App() {
   const [status, setStatus] = useState("idle");
@@ -23,7 +26,7 @@ function App() {
     }
   }
 
-  const Home = (
+    const Home = (
     <header className="App-header">
       <h1>Database Connector</h1>
       <p>Click the button to connect to the database endpoint.</p>
@@ -42,8 +45,19 @@ function App() {
         <button style={{ marginTop: 16 }}>Go to Insert Page</button>
       </Link>
 
-      <Link to="/delete"><
-        button style={{ marginTop: 8 }}>Go to Delete Page</button>
+      <Link to="/delete">
+        <button style={{ marginTop: 8 }}>Go to Delete Page</button>
+      </Link>
+
+      <Link to="/view/species">
+        <button style={{ marginTop: 8 }}>View Species</button>
+      </Link>
+
+      <Link to="/view/visitors">
+        <button style={{ marginTop: 8 }}>View Visitors</button>
+      </Link>
+      <Link to="/view/organizations">
+        <button style={{ marginTop: 8 }}>View Organizations</button>
       </Link>
     </header>
   );
@@ -66,6 +80,30 @@ function App() {
         <Route path="/" element={Home} />
         <Route path="/insert" element={InsertPage} />
         <Route path="/delete" element={DeletePage} />
+        <Route
+          path="/view/species"
+          element={
+            <div className="App-header">
+              <SpeciesTable />
+            </div>
+          }
+        />
+        <Route
+          path="/view/visitors"
+          element={
+            <div className="App-header">
+              <VisitorTable />
+            </div>
+          }
+        />
+        <Route
+          path="/view/organizations"
+          element={
+            <div className="App-header">
+              <OrganizationTable />
+            </div>
+          }
+        />
       </Routes>
     </div>
   );
