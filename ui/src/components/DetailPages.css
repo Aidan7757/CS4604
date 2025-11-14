@@ -1,0 +1,134 @@
+/* Shared layout for Species / Visitors / Organizations detail pages */
+
+.detail-page {
+  min-height: 100vh;
+  padding: 3rem 2rem 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.detail-page-inner {
+  width: 100%;
+  max-width: 1200px;           /* wide enough for 3 cards */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.detail-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #9bd2ff;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+
+.detail-back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-title {
+  font-size: 2.6rem;
+  margin: 0;
+}
+
+.detail-subtitle {
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+  color: #c6c6c6;
+}
+
+.detail-search {
+  margin: 0 auto 1.5rem;
+  max-width: 320px;
+}
+
+.detail-search input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #111;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+
+.detail-search input::placeholder {
+  color: #777;
+}
+
+/* GRID – 1 card on mobile, 2 on medium, 3 on desktop */
+.detail-grid {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;             /* mobile: 1 column */
+}
+
+@media (min-width: 768px) {
+  .detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));  /* tablet: 2 columns */
+  }
+}
+
+@media (min-width: 1100px) {
+  .detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));  /* desktop: 3 columns */
+  }
+}
+
+/* Card styling */
+.detail-card {
+  background: #f4f4f4;
+  color: #111;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;   /* a bit smaller */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  text-align: left;
+}
+
+.detail-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+  font-size: 1.3rem;
+}
+
+.detail-card p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.detail-card strong {
+  font-weight: 600;
+}
+
+/* Fallback when no results */
+.detail-empty {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+/* --- Force 3 cards per row on larger screens --- */
+
+.detail-grid.detail-grid--3 {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* tablet: 2 columns */
+@media (max-width: 900px) {
+  .detail-grid.detail-grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* phone: 1 column */
+@media (max-width: 600px) {
+  .detail-grid.detail-grid--3 {
+    grid-template-columns: 1fr;
+  }
+}
