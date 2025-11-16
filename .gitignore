@@ -1,16 +1,21 @@
-# Python virtual envs
-back_end/src/.venv/
-back_end/.venv/
+# macOS
+.DS_Store
+
+# Python venv & cache
 .venv/
-
-# Python bytecode / cache
-**/__pycache__/
+venv/
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# Env files
-.env
-back_end/.env
-ui/.env
-
-# Node modules
+# Node / React
+node_modules/
 ui/node_modules/
+ui/build/
+
+# Environment files (NO SECRETS IN GIT)
+.env
+*.env
+back_end/src/.env
+ui/.env
