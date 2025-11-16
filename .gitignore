@@ -1,0 +1,16 @@
+# Python virtual envs
+back_end/src/.venv/
+back_end/.venv/
+.venv/
+
+# Python bytecode / cache
+**/__pycache__/
+*.pyc
+
+# Env files
+.env
+back_end/.env
+ui/.env
+
+# Node modules
+ui/node_modules/
