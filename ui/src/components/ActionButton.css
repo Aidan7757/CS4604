@@ -12,8 +12,8 @@
 }
 
 .action-button--primary {
-  background: #61dafb;
-  color: #000;
+  background: rgb(179, 170, 170);
+  color: rgb(0, 0, 0);
 }
 
 .action-button--secondary {

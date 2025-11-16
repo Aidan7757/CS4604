@@ -6,11 +6,11 @@ export const TABLE_SCHEMAS = {
     { name: "park_id", type: "text", required: true },
   ],
   ORGANIZATION: [
-    { name: "org_id", type: "text", required: true },
-    { name: "phone_number", type: "text", required: true },
+    { name: "org_id",        type: "text",  required: true },
+    { name: "org_name",      type: "text",  required: true },
+    { name: "org_type",      type: "text",  required: true },
+    { name: "phone_number",  type: "text",  required: true },
     { name: "contact_email", type: "email", required: true },
-    { name: "name", type: "text", required: true },
-    { name: "type", type: "text", required: true },
   ],
   PARK: [
     { name: "park_id", type: "text", required: true },

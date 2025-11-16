@@ -1,41 +1,56 @@
-/* Overall layout used by Parks page AND your view pages */
-.parks-page {
-  min-height: 100vh;
-  padding: 3rem 2rem 4rem;
+
+body,
+.App {
+  background-color: #ffffff;
+  color: #111111;
 }
 
-/* Header for Parks page (Emily) */
+.parks-page,
+.parks-page--light {
+  min-height: 100vh;
+  padding: 3rem 2rem 4rem;
+  background-color: #ffffff;
+  color: #111111;
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin: 2rem auto 1.5rem;
+  max-width: 1100px;
 }
 
-/* Simple centered header for Species / Visitors / Orgs */
 .page-header-simple {
   text-align: center;
-  margin-bottom: 1.75rem;
+  margin: 2rem auto 1.25rem;
+  max-width: 1100px;
 }
 
 .page-header-simple h1 {
   margin: 0;
-  font-size: 2.6rem;
+  font-size: 2.3rem;
 }
 
 .page-header-simple p {
-  margin-top: 0.4rem;
+  margin: 0.4rem 0 0;
   font-size: 0.95rem;
-  color: #c6c6c6;
+  color: #555;
 }
 
-/* Back link */
+.toolbar-row {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 0.9rem;
-  color: #9bd2ff;
+  color: #0c307f;
   text-decoration: none;
   margin-bottom: 0.75rem;
 }
@@ -44,63 +59,70 @@
   text-decoration: underline;
 }
 
-/* Search row + input */
+
 .search-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
 }
 
 .search-input {
-  max-width: 320px;
   width: 100%;
-  padding: 0.55rem 0.75rem;
+  padding: 0.6rem 0.8rem;
   border-radius: 6px;
-  border: 1px solid #333;
-  background: #111;
-  color: #f5f5f5;
-  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  background: #ffffff;
+  color: #111111;
 }
 
 .search-input::placeholder {
   color: #777;
 }
 
-/* GRID: used by Parks page (park cards) AND your three views */
+
 .park-card-grid {
+  max-width: 1100px;
+  margin: 0 auto 2.5rem;
   display: grid;
   gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;               /* center grid on page */
-  grid-template-columns: repeat(3, minmax(0, 1fr));  /* 3 per row on desktop */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-/* Tablet: 2 per row */
-@media (max-width: 900px) {
-  .park-card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Phone: 1 per row */
-@media (max-width: 600px) {
-  .park-card-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Card styling */
 .park-card {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
   border-radius: 12px;
-  padding: 1.5rem 1.75rem;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   text-decoration: none;
   color: #333;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
   text-align: left;
+  transition: transform 0.2s;
 }
 
 .park-card:hover {
   transform: translateY(-5px);
+}
+
+.park-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.4rem;
+}
+
+.park-card p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.add-park-button {
+  background-color: rgb(222, 220, 220);
+  color: black;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.add-park-button:hover {
+  background-color: rgb(183, 178, 178);
 }

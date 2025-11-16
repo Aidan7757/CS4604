@@ -9,7 +9,7 @@
 
 .detail-page-inner {
   width: 100%;
-  max-width: 1200px;           /* wide enough for 3 cards */
+  max-width: 1200px;          
   margin: 0 auto;
   text-align: center;
 }
@@ -59,17 +59,16 @@
   color: #777;
 }
 
-/* GRID – 1 card on mobile, 2 on medium, 3 on desktop */
 .detail-grid {
   margin-top: 1.5rem;
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: 1fr;             /* mobile: 1 column */
+  grid-template-columns: 1fr;            
 }
 
 @media (min-width: 768px) {
   .detail-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));  /* tablet: 2 columns */
+    grid-template-columns: repeat(2, minmax(0, 1fr));  
   }
 }
 
@@ -104,14 +103,14 @@
   font-weight: 600;
 }
 
-/* Fallback when no results */
+
 .detail-empty {
   margin-top: 2rem;
   font-size: 0.95rem;
   color: #ccc;
 }
 
-/* --- Force 3 cards per row on larger screens --- */
+
 
 .detail-grid.detail-grid--3 {
   display: grid;
