@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
-import UpdateParkForm from "./UpdateParkForm";
-import DeleteParkForm from "./DeleteParkForm";
+import FormModal from "./FormModal";
+import UpdateForm from "./UpdateForm";
+import DeleteForm from "./DeleteForm";
 import "./SingleParkPage.css";
 
 export default function SingleParkPage() {
@@ -15,7 +16,7 @@ export default function SingleParkPage() {
 
   const fetchPark = async () => {
     try {
-      const response = await api.getParkById(parkId);
+      const response = await api.get('park', parkId);
       setPark(response);
       setLoading(false);
     } catch (error) {
@@ -57,18 +58,27 @@ export default function SingleParkPage() {
         <button onClick={() => setDeleteModalOpen(true)}>Delete</button>
       </div>
 
-      <UpdateParkForm
+      <FormModal
         isOpen={isUpdateModalOpen}
         onClose={() => setUpdateModalOpen(false)}
-        onSuccess={handleUpdateSuccess}
-        parkData={park}
-      />
+        title="Update Park"
+      >
+        <UpdateForm
+          tableName="PARK"
+          id={parkId}
+          initialData={park}
+          onSuccess={handleUpdateSuccess}
+          onCancel={() => setUpdateModalOpen(false)}
+        />
+      </FormModal>
 
-      <DeleteParkForm
+      <DeleteForm
         isOpen={isDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
+        tableName="PARK"
+        id={parkId}
         onSuccess={handleDeleteSuccess}
-        parkId={parkId}
+        onCancel={() => setDeleteModalOpen(false)}
       />
     </div>
   );

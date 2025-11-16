@@ -1,85 +1,40 @@
-import { useEffect, useMemo, useState } from "react";
 import api from "../services/api";
-import { TABLE_ORDER, TABLE_PK } from "../tableSchemas";
+import "./Form.css";
 
-export default function DeleteForm() {
-  const [table, setTable] = useState("SPECIES");
-  const pkName = useMemo(() => TABLE_PK[table], [table]);
+export default function DeleteForm({
+  isOpen,
+  tableName,
+  id,
+  onSuccess,
+  onCancel,
+}) {
+  if (!isOpen) return null;
 
-  const [rows, setRows] = useState([]);
-  const [pkValue, setPkValue] = useState("");
-  const [status, setStatus] = useState("idle");
-  const [msg, setMsg] = useState("");
-
-  useEffect(() => {
-    let ignore = false;
-    (async () => {
-      setMsg(""); 
-      setPkValue("");
-      try {
-        const data = await api.listRows(table.toLowerCase());
-        if (!ignore) {
-            setRows(Array.isArray(data) ? data : []);
-        }
-      } catch {
-        if (!ignore) {
-            setRows([]);
-        }
-      }
-    })();
-    return () => { ignore = true; };
-  }, [table]);
-
-  async function onSubmit(e) {
-    e.preventDefault();
-    if (!pkValue) return;
-    if (!window.confirm(`Delete from ${table} where ${pkName}=${pkValue}?`)) return;
-
-    setStatus("loading"); 
-    setMsg("Deleting…");
-
+  const handleDelete = async () => {
     try {
-      const res = await api.del(table.toLowerCase(), { [pkName]: pkValue });
-      setStatus("success");
-      setMsg(res.message || `Deleted from ${table}`);
-      setRows(rs => rs.filter(r => String(r[pkName]) !== String(pkValue)));
-      setPkValue("");
-    } catch (err) {
-      setStatus("error");
-      setMsg(err.message || "Delete failed");
+      await api.del(tableName, { [tableName + "_id"]: id });
+      onSuccess();
+    } catch (error) {
+      console.error(`Failed to delete from ${tableName}:`, error);
     }
-  }
+  };
 
   return (
-    <div className="insert-page">
-      <div className="insert-form-card">
-        <h2>Delete Row</h2>
-
-        <div className="row">
-          <label>Table</label>
-          <select value={table} onChange={e => setTable(e.target.value)}>
-            {TABLE_ORDER.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-
-        <div className="row">
-          <label>{pkName} (from existing rows)</label>
-          <select value={pkValue} onChange={e => setPkValue(e.target.value)}>
-            <option value="">select</option>
-            {rows.map(r => {
-              const pk = r[pkName];
-              return <option key={String(pk)} value={String(pk)}>{String(pk)}</option>;
-            })}
-          </select>
-        </div>
-
-        <form onSubmit={onSubmit}>
-          <button type="submit" disabled={!pkValue || status === "loading"}>
-            {status === "loading" ? "Deleting…" : `Delete from ${table}`}
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Delete {tableName}</h2>
+          <button onClick={onCancel} className="close-button">
+            &times;
           </button>
-        </form>
-
-        <div className="form-status">{msg}</div>
+        </div>
+        <div className="modal-body">
+          <p>Are you sure you want to delete this item?</p>
+          <div className="form-actions">
+            <button onClick={handleDelete}>Delete</button>
+            <button onClick={onCancel}>Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
   );

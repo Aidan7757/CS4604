@@ -10,24 +10,6 @@ export async function connect() {
   return resp.json().catch(() => ({ ok: true }));
 }
 
-export async function getParks() {
-  const resp = await fetch(`${BASE}/parks`);
-  if (!resp.ok) {
-    const text = await resp.text();
-    throw new Error(`Request failed ${resp.status}: ${text}`);
-  }
-  return resp.json();
-}
-
-export async function getParkById(parkId) {
-  const resp = await fetch(`${BASE}/parks/${parkId}`);
-  if (!resp.ok) {
-    const text = await resp.text();
-    throw new Error(`Request failed ${resp.status}: ${text}`);
-  }
-  return resp.json();
-}
-
 export async function getAlerts() {
   const resp = await fetch(`${BASE}/alerts`);
   if (!resp.ok) {
@@ -37,8 +19,10 @@ export async function getAlerts() {
   return resp.json();
 }
 
-export async function getProjects() {
-  const resp = await fetch(`${BASE}/projects`);
+
+
+export async function get(table, id) {
+  const resp = await fetch(`${BASE}/${table.toLowerCase()}s/${id}`);
   if (!resp.ok) {
     const text = await resp.text();
     throw new Error(`Request failed ${resp.status}: ${text}`);
@@ -46,8 +30,8 @@ export async function getProjects() {
   return resp.json();
 }
 
-export async function updatePark(parkId, payload) {
-    const resp = await fetch(`${BASE}/parks/${parkId}`, {
+export async function update(table, id, payload) {
+    const resp = await fetch(`${BASE}/${table.toLowerCase()}s/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -63,8 +47,8 @@ export async function updatePark(parkId, payload) {
     return resp.json();
 }
 
-export async function deletePark(parkId) {
-    const resp = await fetch(`${BASE}/parks/${parkId}`, {
+export async function delById(table, id) {
+    const resp = await fetch(`${BASE}/${table.toLowerCase()}s/${id}`, {
         method: "DELETE",
     });
 
@@ -126,4 +110,4 @@ export async function del(table, where) {
   return data;
 }
 
-export default { connect, insert, listRows, del, getParks, getParkById, getAlerts, getProjects, updatePark, deletePark };
+export default { connect, insert, listRows, del, getAlerts, get, update, delById };

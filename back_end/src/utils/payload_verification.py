@@ -4,7 +4,7 @@ Verifies the payload given for a certain command.
 
 
 def alert_table_insert_verification(payload: dict) -> bool:
-    if payload.get("alert_id") and payload.get("message") and payload.get("park_id") and payload.get("title"):
+    if payload.get("message") and payload.get("park_id") and payload.get("title"):
         return True
     return False
 

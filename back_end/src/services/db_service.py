@@ -108,56 +108,45 @@ class DBService:
                 "error_message": f"Select failed: {str(e)}"
             }), 400
 
-    def get_all_parks(self):
+    def get_by_id(self, table_name, pk_column, id_value):
         if not self.db or not self.db.is_connected():
             self.db = mysql.connector.connect(**DB_CONFIG)
         self.cursor = self.db.cursor(dictionary=True)
         try:
-            self.cursor.execute("SELECT * FROM park")
-            result = self.cursor.fetchall()
-            return jsonify(result), 200
-        except Error as e:
-            return jsonify({"error": str(e)}), 500
-
-    def get_park_by_id(self, park_id):
-        if not self.db or not self.db.is_connected():
-            self.db = mysql.connector.connect(**DB_CONFIG)
-        self.cursor = self.db.cursor(dictionary=True)
-        try:
-            self.cursor.execute("SELECT * FROM park WHERE park_id = %s", (park_id,))
+            self.cursor.execute(f"SELECT * FROM {table_name} WHERE {pk_column} = %s", (id_value,))
             result = self.cursor.fetchone()
             if result:
                 return jsonify(result), 200
             else:
-                return jsonify({"message": "Park not found"}), 404
+                return jsonify({"message": f"Record with ID {id_value} not found in {table_name}"}), 404
         except Error as e:
             return jsonify({"error": str(e)}), 500
 
-    def update_park(self, park_id, payload):
+    def update_by_id(self, table_name, pk_column, id_value, payload):
         if not self.db or not self.db.is_connected():
             self.db = mysql.connector.connect(**DB_CONFIG)
         self.cursor = self.db.cursor()
         try:
-            update_query = "UPDATE park SET {} WHERE park_id = %s".format(
-                ', '.join(['{}=%s'.format(k) for k in payload.keys()])
+            update_query = f"UPDATE {table_name} SET {{}} WHERE {pk_column} = %s".format(
+                ', '.join([f'{k}=%s' for k in payload.keys()])
             )
-            values = list(payload.values()) + [park_id]
+            values = list(payload.values()) + [id_value]
             self.cursor.execute(update_query, values)
             self.db.commit()
-            return jsonify({"message": f"Park with ID {park_id} updated successfully."}), 200
+            return jsonify({"message": f"Record with ID {id_value} in {table_name} updated successfully."}), 200
         except Error as e:
             return jsonify({"error": str(e)}), 500
 
-    def delete_park_by_id(self, park_id):
+    def delete_by_id(self, table_name, pk_column, id_value):
         if not self.db or not self.db.is_connected():
             self.db = mysql.connector.connect(**DB_CONFIG)
         self.cursor = self.db.cursor()
         try:
-            self.cursor.execute("DELETE FROM park WHERE park_id = %s", (park_id,))
+            self.cursor.execute(f"DELETE FROM {table_name} WHERE {pk_column} = %s", (id_value,))
             self.db.commit()
             if self.cursor.rowcount == 0:
-                return jsonify({"message": "Park not found"}), 404
-            return jsonify({"message": f"Park with ID {park_id} deleted successfully."}), 200
+                return jsonify({"message": f"Record with ID {id_value} not found in {table_name}"}), 404
+            return jsonify({"message": f"Record with ID {id_value} from {table_name} deleted successfully."}), 200
         except Error as e:
             return jsonify({"error": str(e)}), 500
 
@@ -176,13 +165,3 @@ class DBService:
         except Error as e:
             return jsonify({"error": str(e)}), 500
 
-    def get_all_projects(self):
-        if not self.db or not self.db.is_connected():
-            self.db = mysql.connector.connect(**DB_CONFIG)
-        self.cursor = self.db.cursor(dictionary=True)
-        try:
-            self.cursor.execute("SELECT * FROM preservation_project")
-            result = self.cursor.fetchall()
-            return jsonify(result), 200
-        except Error as e:
-            return jsonify({"error": str(e)}), 500

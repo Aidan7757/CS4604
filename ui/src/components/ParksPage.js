@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
-import AddParkForm from "./AddParkForm";
+import FormModal from "./FormModal";
+import InsertForm from "./InsertForm";
 import "./ParksPage.css";
 
 export default function ParksPage() {
@@ -12,7 +13,7 @@ export default function ParksPage() {
   const fetchParks = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await api.getParks();
+      const response = await api.listRows('park');
       setParks(response || []);
     } catch (error) {
       console.error("Error fetching parks:", error);
@@ -47,11 +48,20 @@ export default function ParksPage() {
         ))}
       </div>
 
-      <AddParkForm
+      <FormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSuccess={fetchParks}
-      />
+        title="Add New Park"
+      >
+        <InsertForm
+          table="PARK"
+          onSuccess={() => {
+            setIsModalOpen(false);
+            fetchParks();
+          }}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      </FormModal>
     </div>
   );
 }

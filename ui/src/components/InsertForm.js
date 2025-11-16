@@ -14,12 +14,16 @@ export default function InsertForm({ table, onSuccess, onCancel }) {
   const [status, setStatus] = useState("idle");
   const [msg, setMsg] = useState("");
   const [projects, setProjects] = useState([]);
+  const [parks, setParks] = useState([]);
 
   const fields = useMemo(() => TABLE_SCHEMAS[table] ?? [], [table]);
 
   useEffect(() => {
     if (table === "PARK") {
-      api.getProjects().then(setProjects).catch(console.error);
+      api.listRows('preservation_project').then(setProjects).catch(console.error);
+    }
+    if (table === "ALERT") {
+      api.listRows('park').then(setParks).catch(console.error);
     }
   }, [table]);
 
@@ -57,7 +61,7 @@ export default function InsertForm({ table, onSuccess, onCancel }) {
     <form onSubmit={onSubmit}>
       {fields.map(f => (
         <div className="row" key={f.name}>
-          <label htmlFor={f.name}>{f.label}{f.required ? " *" : ""}</label>
+          <label htmlFor={f.name}>{f.label || f.name}{f.required ? " *" : ""}</label>
           {f.type === "select" ? (
             <select
               id={f.name}
@@ -65,10 +69,15 @@ export default function InsertForm({ table, onSuccess, onCancel }) {
               onChange={e => setField(f.name, e.target.value)}
               required={f.required}
             >
-              <option value="">-- Select a Project --</option>
-              {projects.map(project => (
+              <option value="">-- Select an option --</option>
+              {f.name === 'project_id' && projects.map(project => (
                 <option key={project.project_id} value={project.project_id}>
                   {project.project_name}
+                </option>
+              ))}
+              {f.name === 'park_id' && parks.map(park => (
+                <option key={park.park_id} value={park.park_id}>
+                  {park.park_name}
                 </option>
               ))}
             </select>
