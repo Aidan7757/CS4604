@@ -45,8 +45,10 @@ export default function AlertsPage() {
 
   return (
     <div className="alerts-page">
-      <h1>Alerts</h1>
-      <button onClick={() => setAddModalOpen(true)}>Add Alert</button>
+      <div className="alerts-header">
+        <h1>Alerts</h1>
+        <button onClick={() => setAddModalOpen(true)} className="add-alert-button">Add New Alert</button>
+      </div>
       <div className="alert-list-container">
         {Array.isArray(alerts) && alerts.length > 0 ? (
           alerts.map((alert) => (

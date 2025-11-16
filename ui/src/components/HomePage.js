@@ -26,6 +26,14 @@ export default function HomePage() {
           <h2>Organizations</h2>
           <p>View organization information</p>
         </Link>
+        <Link to="/projects" className="card">
+          <h2>Preservation Projects</h2>
+          <p>View preservation projects</p>
+        </Link>
+        <Link to="/pollutants" className="card">
+          <h2>Pollutants</h2>
+          <p>View pollutant data</p>
+        </Link>
       </div>
     </div>
   );

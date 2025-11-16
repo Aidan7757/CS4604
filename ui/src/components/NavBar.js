@@ -21,6 +21,12 @@ export default function NavBar() {
         <li>
           <Link to="/organizations">Organizations</Link>
         </li>
+        <li>
+          <Link to="/projects">Preservation Projects</Link>
+        </li>
+        <li>
+          <Link to="/pollutants">Pollutants</Link>
+        </li>
       </ul>
     </nav>
   );

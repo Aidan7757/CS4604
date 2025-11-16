@@ -4,6 +4,27 @@
   margin: 0 auto; 
 }
 
+.alerts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.add-alert-button {
+  background-color: rgb(26, 25, 25);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.add-alert-button:hover {
+  background-color: #1158a4;
+}
+
 .alert-list-container {
   display: grid; 
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
