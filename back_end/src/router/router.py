@@ -13,13 +13,17 @@ from db_service import DBService
 sys.path.append(os.path.abspath("../src/utils"))
 from payload_verification import payload_verification
 
-VALID_TABLES = {"alert",
-                "organization",
-                "park",
-                "visitor",
-                "pollutant",
-                "species",
-                "preservation_project"}
+TABLE_METADATA = {
+    "alert": {"pk": "alert_id", "plural": "alerts"},
+    "organization": {"pk": "org_id", "plural": "organizations"},
+    "park": {"pk": "park_id", "plural": "parks"},
+    "visitor": {"pk": "visitor_id", "plural": "visitors"},
+    "pollutant": {"pk": "pollutant_id", "plural": "pollutants"},
+    "species": {"pk": "species_id", "plural": "species"},
+    "preservation_project": {"pk": "project_id", "plural": "projects"},
+}
+
+VALID_TABLES = set(TABLE_METADATA.keys())
 
 
 '''
@@ -111,6 +115,36 @@ def select_table(table_name: str):
 
     db_service = DBService()
     return db_service.select_rows(table_name)
+
+@app.route("/<plural_table_name>/<id_value>", methods=["GET", "PUT", "DELETE"])
+def handle_record(plural_table_name, id_value):
+    table_name = None
+    for name, meta in TABLE_METADATA.items():
+        if meta["plural"] == plural_table_name.lower():
+            table_name = name
+            break
+
+    if not table_name:
+        return jsonify({"error_message": f"Table {plural_table_name} is not a valid table"}), 400
+
+    pk_column = TABLE_METADATA[table_name]["pk"]
+    db_service = DBService()
+
+    if request.method == "GET":
+        return db_service.get_by_id(table_name, pk_column, id_value)
+    elif request.method == "PUT":
+        payload = dict(request.json)
+        return db_service.update_by_id(table_name, pk_column, id_value, payload)
+    elif request.method == "DELETE":
+        return db_service.delete_by_id(table_name, pk_column, id_value)
+
+"""
+Get all alerts
+"""
+@app.route('/alerts', methods=['GET'])
+def get_alerts():
+    db_service = DBService()
+    return db_service.get_all_alerts()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

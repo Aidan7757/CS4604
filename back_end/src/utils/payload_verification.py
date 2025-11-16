@@ -4,7 +4,7 @@ Verifies the payload given for a certain command.
 
 
 def alert_table_insert_verification(payload: dict) -> bool:
-    if payload.get("alert_id") and payload.get("message") and payload.get("park_id") and payload.get("title"):
+    if payload.get("message") and payload.get("park_id") and payload.get("title"):
         return True
     return False
 
@@ -17,7 +17,7 @@ def org_table_insert_verification(payload: dict) -> bool:
 
 
 def park_table_insert_verification(payload: dict) -> bool:
-    if payload.get("park_id") and payload.get("park_name") and payload.get("status"):
+    if payload.get("park_name") and payload.get("status"):
         return True
     return False
 

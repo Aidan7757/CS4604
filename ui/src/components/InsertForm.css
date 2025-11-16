@@ -4,7 +4,6 @@
   align-items: flex-start;
   padding-top: 4rem;
   min-height: 100vh;
-  color: white;
   text-align: left;
 }
 
@@ -39,14 +38,12 @@
   font-size: 0.95rem;
   border-radius: 6px;
   border: 1px solid #444;
-  background: #1e2127;
-  color: white;
 }
 
 .row input:focus,
 .row select:focus {
   outline: none;
-  border-color: #61dafb;
+  border-color: #4d5557;
 }
 
 button[type="submit"] {
@@ -56,14 +53,14 @@ button[type="submit"] {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: #61dafb;
-  color: black;
+  background: #272929;
+  color: white;
   font-weight: 600;
   margin-top: 0.5rem;
 }
 
 button[type="submit"]:hover {
-  background: #53c8e6;
+  background: #323334;
 }
 
 .form-status {

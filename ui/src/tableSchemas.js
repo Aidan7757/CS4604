@@ -1,9 +1,8 @@
 export const TABLE_SCHEMAS = {
   ALERT: [
-    { name: "alert_id", type: "text", required: true },
-    { name: "title", type: "text", required: true },
-    { name: "message", type: "text", required: true },
-    { name: "park_id", type: "text", required: true },
+    { name: "title", type: "text", required: true, label: "Title" },
+    { name: "message", type: "text", required: true, label: "Message" },
+    { name: "park_id", type: "select", required: true, label: "Park" },
   ],
   ORGANIZATION: [
     { name: "org_id", type: "text", required: true },
@@ -13,10 +12,9 @@ export const TABLE_SCHEMAS = {
     { name: "type", type: "text", required: true },
   ],
   PARK: [
-    { name: "park_id", type: "text", required: true },
-    { name: "park_name", type: "text", required: true },
-    { name: "status", type: "text", required: true },
-    { name: "project_id", type: "text", required: false },
+    { name: "park_name", type: "text", required: true, label: "Park Name" },
+    { name: "status", type: "text", required: true, label: "Status" },
+    { name: "project_id", type: "select", required: false, label: "Project", options: [] },
   ],
   POLLUTANT: [
     { name: "pollutant_id", type: "text", required: true },
