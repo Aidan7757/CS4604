@@ -1,21 +1,25 @@
-# macOS
-.DS_Store
-
-# Python venv & cache
-.venv/
-venv/
+# Python
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
+**/__pycache__/
 
-# Node / React
+# Virtual env
+.venv/
+venv/
+
+# Node
 node_modules/
-ui/node_modules/
-ui/build/
 
-# Environment files (NO SECRETS IN GIT)
+# Environment files
 .env
-*.env
-back_end/src/.env
 ui/.env
+back_end/.env
+back_end/src/.env
+
+# OS files
+.DS_Store
+
+# Build artifacts
+dist/
+build/
